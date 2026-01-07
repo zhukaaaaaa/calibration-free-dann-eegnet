@@ -20,4 +20,5 @@ See full per-subject results in `artifacts/`
 
 1. Install dependencies:
    ```bash
-   pip install -r requirements.txt
+  pip install -r requirements.txt
+python run_loso.py
