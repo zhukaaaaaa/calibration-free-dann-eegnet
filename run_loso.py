@@ -24,14 +24,14 @@ import matplotlib.pyplot as plt
 warnings.filterwarnings("ignore")
 
 
-DATA_ROOT = "./data"          # folder with S01-epo.fif ...
+DATA_ROOT = "./data"        
 EPOCHS_SUFFIX = "-epo.fif"
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SEED = 42
 
 TARGET_SFREQ = 250
-TMIN, TMAX = -0.2, 0.8          # train-time crop window
+TMIN, TMAX = -0.2, 0.8         
 BANDPASS = (1.0, 40.0)
 NOTCH = 50.0
 
@@ -46,7 +46,7 @@ FIXED_CHANNELS: Optional[List[str]] = None
 ARTIFACT_DIR = "./artifacts"
 
 
-TSNE_MAX_BATCHES = 12         # number of eval batches to embed per subject
+TSNE_MAX_BATCHES = 12        
 TSNE_PERPLEXITY = 30
 
 
@@ -268,9 +268,6 @@ class DANN_EEGNet(nn.Module):
         return self.label_head(z)
 
 
-# =========================
-# TRAIN / EVAL
-# =========================
 def dann_alpha(ep, total):
     if ep < DANN_WARMUP_EPOCHS:
         return 0.0
@@ -321,7 +318,6 @@ def run_loso():
         ys_raw = np.concatenate([xy[s][1] for s in srcs])
         Xt, yt_raw = xy[tgt]
 
-        # class alignment
         common = np.intersect1d(np.unique(ys_raw), np.unique(yt_raw))
         if len(common) < 2:
             print(f"{tgt}: skip (common classes < 2)")
@@ -349,7 +345,6 @@ def run_loso():
         ds = ds_full[ms]
         dt = np.full(len(yt), dom_map[tgt], dtype=np.int64)
 
-        # scale (fit only on source)
         sc = fit_scaler(Xs)
         Xs, Xt = apply_scaler(Xs, sc), apply_scaler(Xt, sc)
 
@@ -407,7 +402,6 @@ def run_loso():
         cm_path = os.path.join(ARTIFACT_DIR, f"cm_{run_tag}_{tgt}.png")
         save_cm(Y_true, Y_pred, class_names, cm_path, title=f"{tgt} Confusion Matrix")
 
-        # t-SNE per subject (features)
         Zt, Yt, Dt = collect_features_and_labels(model, eval_loader, max_batches=TSNE_MAX_BATCHES)
         save_tsne(
             Zt, Yt,
@@ -459,7 +453,6 @@ def run_loso():
     print("Saved metrics:", metrics_csv)
     print("Saved summary:", summary_path)
 
-    # overall confusion matrix across all targets
     if all_targets_true and all_targets_pred and class_names_last is not None:
         Y_all = np.concatenate(all_targets_true)
         P_all = np.concatenate(all_targets_pred)
@@ -467,7 +460,6 @@ def run_loso():
         save_cm(Y_all, P_all, class_names_last, cm_all_path, title="ALL Targets Confusion Matrix")
         print("Saved overall CM:", cm_all_path)
 
-    # zip artifacts for easy download (only current run folder)
     zip_path = shutil.make_archive(
         os.path.join(ARTIFACT_DIR, f"artifacts_{run_tag}"),
         "zip",
