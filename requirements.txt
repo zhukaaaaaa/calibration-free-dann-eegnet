@@ -1,0 +1,6 @@
+torch>=2.0
+mne>=1.6
+numpy
+scikit-learn
+matplotlib
+joblib
