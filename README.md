@@ -2,7 +2,7 @@
 
 **Official repository** for the paper:  
 **Calibration-Free Motor Imagery Classification Based on Electroencephalography Using Domain-Adversarial Neural Networks**  
-Aigerim Aitim, Zhuldyz Bagybek  
+Zhuldyz Bagybek  
 
 International Information Technology University (IITU), Almaty, Kazakhstan
 
