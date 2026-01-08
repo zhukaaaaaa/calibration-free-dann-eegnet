@@ -1,7 +1,5 @@
 # Calibration-Free Motor Imagery Classification Using Domain-Adversarial EEGNet
 
-**Official repository** for the paper:  
-**Calibration-Free Motor Imagery Classification Based on Electroencephalography Using Domain-Adversarial Neural Networks**  
 Zhuldyz Bagybek  
 
 International Information Technology University (IITU), Almaty, Kazakhstan
