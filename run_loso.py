@@ -470,5 +470,3 @@ def run_loso():
 
 if __name__ == "__main__":
     run_loso()
- вот код
-```
